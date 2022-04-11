@@ -14,34 +14,37 @@ using XboxKeyboardMouse.Libs;
 
 namespace XboxKeyboardMouse
 {
-    static class Program {
+    static class Program
+    {
         public static MainForm MainForm;
 
         /** Public Variables Across the Whole Application */
-        public static Config.Data         ActiveConfig;
-        public static bool                DoneLoadingCfg = false;
-        public static bool                HideCursor     = true;
-        public static string              ActiveConfigFile = "";
+        public static Config.Data ActiveConfig;
+        public static bool DoneLoadingCfg = false;
+        public static bool HideCursor = true;
+        public static string ActiveConfigFile = "";
         public static MaterialSkinManager mSkin;
 
-        public static bool                ToggleStatusState = false;
+        public static bool ToggleStatusState = false;
 
         [DllImport("kernel32.dll")]
-            static extern bool AttachConsole(int input);
+        static extern bool AttachConsole(int input);
         [DllImport("kernel32.dll", EntryPoint = "GetStdHandle", SetLastError = true, CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-            public static extern IntPtr GetStdHandle(int nStdHandle);
+        public static extern IntPtr GetStdHandle(int nStdHandle);
         [DllImport("kernel32.dll", EntryPoint = "AllocConsole", SetLastError = true, CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-            public static extern int AllocConsole();
+        public static extern int AllocConsole();
         [DllImport("kernel32.dll", SetLastError = true)]
-            private static extern int FreeConsole();
-        
-        public static bool SetActiveConfig(string file) {
+        private static extern int FreeConsole();
+
+        public static bool SetActiveConfig(string file)
+        {
             var profilePath = Path.Combine("profiles", file);
 
-            if (!File.Exists(profilePath)) 
-                 return false;
+            if (!File.Exists(profilePath))
+                return false;
 
-            lock (ActiveConfig) {
+            lock (ActiveConfig)
+            {
                 Data d = Data.Load(file);
                 ActiveConfig = d;
             }
@@ -54,11 +57,12 @@ namespace XboxKeyboardMouse
             IniFile appcfg = new IniFile("config.ini");
             appcfg.AddSetting("Xbox", "KeyProfile", file);
             appcfg.SaveSettings();
-            
+
             return true;
         }
 
-        public static void ReloadActiveConfig() {
+        public static void ReloadActiveConfig()
+        {
             ReloadControlScheme();
 
             // Load our application settings
@@ -66,7 +70,8 @@ namespace XboxKeyboardMouse
             Hooks.LowLevelKeyboardHook.LockEscape = ActiveConfig.Application_LockEscape;
         }
 
-        public static void ReloadControlScheme() {
+        public static void ReloadControlScheme()
+        {
             TranslateKeyboard.ClearAllDicts();
 
             lock (TranslateKeyboard.buttons)
@@ -144,11 +149,13 @@ namespace XboxKeyboardMouse
             }
         }
 
-        public static void ReadConfiguration(string defaultProfile = "default.ini") {
+        public static void ReadConfiguration(string defaultProfile = "default.ini")
+        {
             // Setup the default application cfg file if does not exist
             IniFile appcfg = null;
-            
-            if (!File.Exists("config.ini")) {
+
+            if (!File.Exists("config.ini"))
+            {
                 File.Create("config.ini").Close();
 
                 appcfg = new IniFile("config.ini");
@@ -167,15 +174,16 @@ namespace XboxKeyboardMouse
         }
 
         [STAThread]
-        static void Main(string[] args) {
+        static void Main(string[] args)
+        {
             // Check if we are debugging
             // if so then attach the console
-            #if (DEBUG)
+#if (DEBUG)
                 int conPtr = AllocConsole();
                 AttachConsole(conPtr);
                 Logger.appendLogLine("State", "Console Attached!", Logger.Type.Info);
-            #endif
-            
+#endif
+
             ReadConfiguration();
             ActiveConfig = Data.Load(ActiveConfigFile);
             ReloadActiveConfig();
@@ -194,25 +202,30 @@ namespace XboxKeyboardMouse
             tPause.SetApartmentState(ApartmentState.STA);
             tPause.IsBackground = true;
             tPause.Start();
-            
-            Thread tActivateKM = new Thread(() => { Activate.ActivateKeyboardAndMouse();  });
+
+            Thread tActivateKM = new Thread(() => { Activate.ActivateKeyboardAndMouse(); });
             tActivateKM.SetApartmentState(ApartmentState.STA);
             tActivateKM.IsBackground = true;
             tActivateKM.Start();
         }
 
-        private static void ApplicationRun() {
+        private static void ApplicationRun()
+        {
             Application.EnableVisualStyles();
-            
+
             // Start our lowlevel keyboard hook
-            if (IntPtr.Size == 8) {
+            if (IntPtr.Size == 8)
+            {
                 Hooks.LowLevelKeyboardHook._hookID =
                     Hooks.LowLevelKeyboardHook.SetHook(Hooks.LowLevelKeyboardHook._proc);
 
-                if (Hooks.LowLevelKeyboardHook._hookID == IntPtr.Zero) {
+                if (Hooks.LowLevelKeyboardHook._hookID == IntPtr.Zero)
+                {
                     MessageBox.Show("Failed to find the Xbox Application to disable Escape.");
                 }
-            } else {
+            }
+            else
+            {
                 //MessageBox.Show("In 32bit mode you cannot disable the Escape key!", "Notice about 32bit", MessageBoxButtons.OK, MessageBoxIcon.Question);
             }
 
@@ -221,35 +234,40 @@ namespace XboxKeyboardMouse
             Application.Run(MainForm);
         }
 
-        private static void Pause() {
-            while (true) {
+        private static void Pause()
+        {
+            while (true)
+            {
                 var useModifier = (ActiveConfig.Controls_KB_Detach_MOD != (int)Key.None);
-                bool detachKey  = (useModifier ?
+                bool detachKey = (useModifier ?
                     Keyboard.IsKeyDown((Key)ActiveConfig.Controls_KB_Detach_MOD) &&
                         Keyboard.IsKeyDown((Key)ActiveConfig.Controls_KB_Detach_KEY) :
                     Keyboard.IsKeyDown((Key)ActiveConfig.Controls_KB_Detach_KEY));
 
-                if (detachKey || ToggleStatusState) {
-                    if (ToggleStatusState) {
+                if (detachKey || ToggleStatusState)
+                {
+                    if (ToggleStatusState)
+                    {
                         ToggleStatusState = false;
                     }
 
                     bool inputDead = !Activate.tKMInput.IsAlive;
                     bool streamDead = !Activate.tXboxStream.IsAlive;
 
-                    #if (DEBUG)
+#if (DEBUG)
                         Logger.appendLogLine("Threads", $"Threads Status: Input - {!inputDead}, Stream - {!streamDead}",
                                              Logger.Type.Debug);
-                    #endif
+#endif
 
-                    if (!inputDead && !streamDead) {
-                        #if (DEBUG)
+                    if (!inputDead && !streamDead)
+                    {
+#if (DEBUG)
                             Logger.appendLogLine("Threads", "Aborting all threads!", Logger.Type.Info);
-                        #endif
+#endif
 
-                        try { Activate.tXboxStream.Abort(); }       catch (Exception) { }
-                        try { Activate.tKMInput.Abort(); }          catch (Exception) { }
-                        try { XboxStream.tMouseMovement.Abort(); }  catch (Exception) { } 
+                        try { Activate.tXboxStream.Abort(); } catch (Exception) { }
+                        try { Activate.tKMInput.Abort(); } catch (Exception) { }
+                        try { XboxStream.tMouseMovement.Abort(); } catch (Exception) { }
 
                         CursorView.CursorShow();
 
@@ -261,13 +279,17 @@ namespace XboxKeyboardMouse
 
                         // Reset the controller
                         Activate.ResetController();
-                            
+
                         MainForm.StatusStopped();
-                    } else {
+                    }
+                    else
+                    {
                         // && Activate.tXboxStream.IsAlive == false
-                        if (inputDead || streamDead) {
+                        if (inputDead || streamDead)
+                        {
                             // Start the required threads
-                            Thread tActivateKM = new Thread(() => {
+                            Thread tActivateKM = new Thread(() =>
+                            {
                                 Activate.ActivateKeyboardAndMouse(streamDead, inputDead);
                             });
                             tActivateKM.SetApartmentState(ApartmentState.STA);

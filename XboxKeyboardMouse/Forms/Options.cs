@@ -11,15 +11,17 @@ using System.Windows.Input;
 
 namespace XboxKeyboardMouse.Forms
 {
-    public partial class Options : Controls.FormRWE {
+    public partial class Options : Controls.FormRWE
+    {
 
-        public Options() {
+        public Options()
+        {
             InitializeComponent();
 
             this.MouseDown += FormMouseMove;
 
             materialTabSelector1.MouseMove += MaterialTabSelector1_MouseMove;
-            btnExit.MouseMove              += MaterialTabSelector1_MouseMove;
+            btnExit.MouseMove += MaterialTabSelector1_MouseMove;
 
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
@@ -33,20 +35,24 @@ namespace XboxKeyboardMouse.Forms
             PrepareInfoTab();
         }
 
-        public override void SetStatusColor(Color c) {
+        public override void SetStatusColor(Color c)
+        {
             btnExit.BackColor = c;
         }
 
         #region Events
         // -----------
 
-        private void MaterialTabSelector1_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (e.Button == MouseButtons.Left) {
+        private void MaterialTabSelector1_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
                 FormMouseMove(this, e);
             }
         }
 
-        private void ExitForm(object sender, EventArgs e) {
+        private void ExitForm(object sender, EventArgs e)
+        {
             this.Hide();
         }
 
@@ -75,16 +81,17 @@ namespace XboxKeyboardMouse.Forms
 
         #region Xbox Input Editor
         /// <summary>Defines values that specify the buttons on a mouse device.</summary>
-        public enum MouseButton {
+        public enum MouseButton
+        {
             /// <summary>Nothing</summary>
             None = -1,
 
             /// <summary>The left mouse button.   
             Left = 0,
-            
+
             /// <summary>The middle mouse button.</summary>
             Middle = 1,
-            
+
             /// <summary>The right mouse button.</summary>
             Right = 2,
 
@@ -95,7 +102,8 @@ namespace XboxKeyboardMouse.Forms
             XButton2 = 4
         }
 
-        private void ResetXboxInputButtons() {
+        private void ResetXboxInputButtons()
+        {
             // Keyboard
             xbo_k_A.Text = "";
             xbo_k_B.Text = "";
@@ -156,7 +164,8 @@ namespace XboxKeyboardMouse.Forms
             //*/
         }
 
-        private void LoadXboxInputButtons() {
+        private void LoadXboxInputButtons()
+        {
             // Keyboard
             xbo_k_A.Text = ((Key)cfg.Controls_KB_Xbox_A).ToString();
             xbo_k_B.Text = ((Key)cfg.Controls_KB_Xbox_B).ToString();
@@ -217,37 +226,44 @@ namespace XboxKeyboardMouse.Forms
             //*/
         }
 
-        public void ApplyInputEvents() {
-            foreach (Control ctrl in editor_InputKeyboard.Controls) {
-                if (ctrl is Label) {
+        public void ApplyInputEvents()
+        {
+            foreach (Control ctrl in editor_InputKeyboard.Controls)
+            {
+                if (ctrl is Label)
+                {
                     ctrl.MouseHover += XBO_Input_OnEnter;
                     ctrl.MouseLeave += XBO_Input_OnLeave;
                     ctrl.MouseDoubleClick += XBO_Input_SelectKey;
                 }
             }
 
-            xbo_k_TLeft.MouseHover        += XBO_Input_OnEnter;
-            xbo_k_TLeft.MouseLeave        += XBO_Input_OnLeaveTrig;
-            xbo_k_TLeft.MouseDoubleClick  += XBO_Input_SelectKey;
-            xbo_k_TRight.MouseHover       += XBO_Input_OnEnter;
-            xbo_k_TRight.MouseLeave       += XBO_Input_OnLeaveTrig;
+            xbo_k_TLeft.MouseHover += XBO_Input_OnEnter;
+            xbo_k_TLeft.MouseLeave += XBO_Input_OnLeaveTrig;
+            xbo_k_TLeft.MouseDoubleClick += XBO_Input_SelectKey;
+            xbo_k_TRight.MouseHover += XBO_Input_OnEnter;
+            xbo_k_TRight.MouseLeave += XBO_Input_OnLeaveTrig;
             xbo_k_TRight.MouseDoubleClick += XBO_Input_SelectKey;
         }
 
         #region Input Handlers
-        private void XBO_Input_SelectKey(object sender, System.Windows.Forms.MouseEventArgs e) {
+        private void XBO_Input_SelectKey(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
             var lbl = (Label)sender;
 
             var bEscape = Hooks.LowLevelKeyboardHook.LockEscape;
-            Hooks.LowLevelKeyboardHook.LockEscape = false; {
+            Hooks.LowLevelKeyboardHook.LockEscape = false;
+            {
                 SelectKey k = new SelectKey(cfg, (string)lbl.Tag);
                 k.ShowDialog();
-            } Hooks.LowLevelKeyboardHook.LockEscape = bEscape;
+            }
+            Hooks.LowLevelKeyboardHook.LockEscape = bEscape;
 
             LoadXboxInputButtons();
         }
 
-        private void XBO_Input_OnLeave(object sender, EventArgs e) {
+        private void XBO_Input_OnLeave(object sender, EventArgs e)
+        {
             var lbl = (Label)sender;
             var lblTag = (string)lbl.Tag;
             if (lblTag.StartsWith("JR") || lblTag.StartsWith("JL"))
@@ -255,12 +271,14 @@ namespace XboxKeyboardMouse.Forms
             else lbl.ForeColor = Color.White;
         }
 
-        private void XBO_Input_OnLeaveTrig(object sender, EventArgs e) {
+        private void XBO_Input_OnLeaveTrig(object sender, EventArgs e)
+        {
             var lbl = (Label)sender;
             lbl.ForeColor = Color.Black;
         }
 
-        private void XBO_Input_OnEnter(object sender, EventArgs e) {
+        private void XBO_Input_OnEnter(object sender, EventArgs e)
+        {
             var lbl = (Label)sender;
             lbl.ForeColor = Color.FromArgb(93, 194, 30);
         }
@@ -274,13 +292,16 @@ namespace XboxKeyboardMouse.Forms
         string originalName = "";
         private string editingProfile = "";
 
-        private void RefreshConfigList(string selected = "") {
+        private void RefreshConfigList(string selected = "")
+        {
             lbPresets.Items.Clear();
 
             var files = Directory.GetFiles("profiles", "*.ini", SearchOption.TopDirectoryOnly);
-            foreach (var filePath in files) {
+            foreach (var filePath in files)
+            {
                 var presetFile = Path.GetFileNameWithoutExtension(filePath);
-                lbPresets.Items.Add(new ListViewItem(presetFile) {
+                lbPresets.Items.Add(new ListViewItem(presetFile)
+                {
                     Selected = presetFile == selected,
                 });
             }
@@ -306,10 +327,10 @@ namespace XboxKeyboardMouse.Forms
             set
             {
                 editingProfile = value;
-                file_Editing.Text = "Editing: " + value;
+                file_Editing.Text = "编辑中的配置: " + value;
             }
         }
-        
+
         private string EditingProfilePath
         {
             get
@@ -320,35 +341,43 @@ namespace XboxKeyboardMouse.Forms
 
         #region Preset Creation
         Color preset_Color_Default = Color.FromArgb(0xFF, 0x21, 0x21, 0x21);
-        Color preset_Color_Exists  = ((int)Primary.Red800).ToColor();
+        Color preset_Color_Exists = ((int)Primary.Red800).ToColor();
         Color preset_Color_Created = ((int)Primary.Green500).ToColor();
 
         // Check if a preset exists
-        private bool presetNameExists() {
+        private bool presetNameExists()
+        {
             return File.Exists(Path.Combine("profiles", file_CreatePreset_Text.Text + ".ini"));
         }
 
         // Refresh the listing
-        private void file_RefreshList_Click(object sender, EventArgs e) {
+        private void file_RefreshList_Click(object sender, EventArgs e)
+        {
             RefreshConfigList();
         }
 
         // Check if preset exists
-        private void file_CheckIfExists(object sender, System.Windows.Forms.KeyEventArgs e) {
-            if (presetNameExists()) {
+        private void file_CheckIfExists(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (presetNameExists())
+            {
                 file_CreatePreset_Button.Enabled = false;
-            } else {
+            }
+            else
+            {
                 file_CreatePreset_Button.Enabled = true;
                 file_CreatePreset_Button.FontColor = preset_Color_Default;
             }
         }
 
         // Create the preset
-        private void file_CreatePreset_Button_Click(object sender, EventArgs e) {
+        private void file_CreatePreset_Button_Click(object sender, EventArgs e)
+        {
             var presetString = file_CreatePreset_Text.Text;
             var filePath = Path.Combine("profiles", presetString + ".ini");
-            
-            if (presetNameExists()) {
+
+            if (presetNameExists())
+            {
                 file_CreatePreset_Button.Enabled = false;
                 MessageBox.Show("Preset already exists (" + presetString + ".ini)");
                 return;
@@ -362,7 +391,7 @@ namespace XboxKeyboardMouse.Forms
 
             // Saved
             file_CreatePreset_Button.FontColor = preset_Color_Created;
-            
+
             MessageBox.Show(string.Format("Created preset '{0}'", presetString));
             RefreshConfigList();
         }
@@ -378,14 +407,16 @@ namespace XboxKeyboardMouse.Forms
         // ---------
 
         bool TabsAdded = false;
-        private void file_LoadPreset_Click(object sender, EventArgs e) {
+        private void file_LoadPreset_Click(object sender, EventArgs e)
+        {
             if (SelectedListProfile == null)
             {
                 MessageBox.Show("You must select a profile first.");
                 return;
             }
 
-            if (!File.Exists(SelectedListProfilePath)) {
+            if (!File.Exists(SelectedListProfilePath))
+            {
                 MessageBox.Show(string.Format("The profile '{0}' no longer exists (at {1})", SelectedListProfile, SelectedListProfilePath));
                 RefreshConfigList();
                 return;
@@ -404,7 +435,8 @@ namespace XboxKeyboardMouse.Forms
             mouseInvertAxisY.Checked = cfg.Mouse_Invert_Y;
 
             // Check if the mouse setting is valid
-            if (cfg.Mouse_Eng_Type == MouseTranslationMode.INVALID) {
+            if (cfg.Mouse_Eng_Type == MouseTranslationMode.INVALID)
+            {
                 MessageBox.Show("Invalid mouse engine selected -> Reset to default!");
                 cfg.Mouse_Eng_Type = MouseTranslationMode.DeadZoning;
                 Config.Data.Save(EditingProfile + ".ini", cfg);
@@ -413,7 +445,8 @@ namespace XboxKeyboardMouse.Forms
             mouseEngineList.SelectedIndex = (int)cfg.Mouse_Eng_Type;
 
             // Ensure tickrate is not 0
-            if (cfg.Mouse_TickRate == 0) {
+            if (cfg.Mouse_TickRate == 0)
+            {
                 cfg.Mouse_TickRate = 40;
                 Config.Data.Save(EditingProfile + ".ini", cfg);
             }
@@ -424,14 +457,17 @@ namespace XboxKeyboardMouse.Forms
             var k1 = (Key)cfg.Controls_KB_Detach_MOD;
             var k2 = (Key)cfg.Controls_KB_Detach_KEY;
 
-            if (k1 == Key.None && k2 == Key.None) {
+            if (k1 == Key.None && k2 == Key.None)
+            {
                 MessageBox.Show("You can't disable the detach key. Reset to default (LeftAlt + C)!");
 
                 cfg.Controls_KB_Detach_MOD = (int)Key.LeftAlt;
                 cfg.Controls_KB_Detach_KEY = (int)Key.C;
 
                 Config.Data.Save(EditingProfile + ".ini", cfg);
-            } else {
+            }
+            else
+            {
                 detachKeyCheckup(true);
             }
 
@@ -440,11 +476,11 @@ namespace XboxKeyboardMouse.Forms
             kbMod = (kbMod == "None" ? "" : $"{kbMod} +");
 
             string kbKey = ((Key)cfg.Controls_KB_Detach_KEY).ToString();
-            settings_DetachKey.Text = $"On/Off Key: {kbMod} {kbKey}";
+            settings_DetachKey.Text = $"开关快捷键: {kbMod} {kbKey}";
 
             // Display our current file and active files
-            file_Active.Text  = "Active Preset: " + Program.ActiveConfig.Name;
-            
+            file_Active.Text = "使用中的配置: " + Program.ActiveConfig.Name;
+
             editor_InputKeyboard.Enabled = true;
 
             originalName = cfg.Name;
@@ -465,7 +501,8 @@ namespace XboxKeyboardMouse.Forms
             tabMouse.Enabled = true;
 
             // Add the tabs if not already added
-            if (!TabsAdded) {
+            if (!TabsAdded)
+            {
                 TabsAdded = true;
 
                 // Add the tabs as controls
@@ -476,14 +513,16 @@ namespace XboxKeyboardMouse.Forms
             }
         }
 
-        private void file_SetAsActive_Click(object sender, EventArgs e) {
+        private void file_SetAsActive_Click(object sender, EventArgs e)
+        {
             if (SelectedListProfile == null)
             {
                 MessageBox.Show("You must select a profile first.");
                 return;
             }
 
-            if (!File.Exists(SelectedListProfilePath)) {
+            if (!File.Exists(SelectedListProfilePath))
+            {
                 MessageBox.Show(string.Format("The profile '{0}' no longer exists (at {1})", SelectedListProfile, SelectedListProfilePath));
                 RefreshConfigList();
                 return;
@@ -520,13 +559,15 @@ namespace XboxKeyboardMouse.Forms
 
             File.Delete(SelectedListProfilePath);
 
-            if (SelectedListProfile == "default") {
+            if (SelectedListProfile == "default")
+            {
                 // Remake the default ini
                 Config.Data d = new Config.Data();
                 Config.Data.Save("default.ini", d);
             }
 
-            if (Program.ActiveConfig.Name == SelectedListProfile) {
+            if (Program.ActiveConfig.Name == SelectedListProfile)
+            {
                 SetActive("default.ini");
             }
 
@@ -539,18 +580,22 @@ namespace XboxKeyboardMouse.Forms
         #region Settings
         // -------------
 
-        private void settings_LockEscape_CheckedChanged(object sender, EventArgs e) {
+        private void settings_LockEscape_CheckedChanged(object sender, EventArgs e)
+        {
             cfg.Application_LockEscape = settings_LockEscape.Checked;
         }
 
-        private void settings_ShowCursor_CheckedChanged(object sender, EventArgs e) {
+        private void settings_ShowCursor_CheckedChanged(object sender, EventArgs e)
+        {
             //Program.HideCursor = !settings_ShowCursor.Checked;
             cfg.Application_ShowCursor = settings_ShowCursor.Checked;
         }
 
-        private void settings_DetachKey_Click(object sender, EventArgs e) {
+        private void settings_DetachKey_Click(object sender, EventArgs e)
+        {
             // Get current modifers
-            Models.MSelectKey_Storage storage = new Models.MSelectKey_Storage() {
+            Models.MSelectKey_Storage storage = new Models.MSelectKey_Storage()
+            {
                 Cancel = false,
                 inputKey = cfg.Controls_KB_Detach_KEY,
                 inputMod = cfg.Controls_KB_Detach_MOD
@@ -574,8 +619,9 @@ namespace XboxKeyboardMouse.Forms
             var k2 = (Key)cfg.Controls_KB_Detach_KEY;
             var no = Key.None;
 
-            if (k1 == no && k2 == no) {
-                MessageBox.Show("You cant disable the detach key, reset to default (LeftAlt + C)!");
+            if (k1 == no && k2 == no)
+            {
+                MessageBox.Show("您不能禁用快捷键，重置为默认值 (LeftAlt + C)!");
 
                 cfg.Controls_KB_Detach_MOD = (int)Key.LeftAlt;
                 cfg.Controls_KB_Detach_KEY = (int)Key.C;
@@ -584,13 +630,14 @@ namespace XboxKeyboardMouse.Forms
             detachKeyCheckup();
 
             string kbMod = ((Key)cfg.Controls_KB_Detach_MOD).ToString();
-            kbMod = (kbMod == "None" ? "" : $"{kbMod} +");
+            kbMod = (kbMod == "无" ? "" : $"{kbMod} +");
 
             string kbKey = ((Key)cfg.Controls_KB_Detach_KEY).ToString();
-            settings_DetachKey.Text = $"On/Off Key: {kbMod} {kbKey}";
+            settings_DetachKey.Text = $"开关快捷键: {kbMod} {kbKey}";
         }
 
-        private void settings_SaveAllChanges_Click(object sender, EventArgs e) {
+        private void settings_SaveAllChanges_Click(object sender, EventArgs e)
+        {
             // The dreaded save button ;(
 
             // Ignore name for now, that will
@@ -606,7 +653,8 @@ namespace XboxKeyboardMouse.Forms
             //cfg.Mouse_Eng_Type = (int)mouseMouseEngine.SelectedIndex;
             //cfg.Mouse_FinalMod = (double)mouseMouseModifier.Value;
 
-            if (cfg.Name.Trim() != preset_Name.Text.Trim()) {
+            if (cfg.Name.Trim() != preset_Name.Text.Trim())
+            {
                 cfg.Name = preset_Name.Text.Trim();
                 File.Delete(EditingProfilePath);
             }
@@ -614,21 +662,24 @@ namespace XboxKeyboardMouse.Forms
             // Saved
             Config.Data.Save(cfg.Name + ".ini", cfg);
 
-            MessageBox.Show(string.Format("The profile '{0}' has been saved.", cfg.Name));
+            MessageBox.Show(string.Format("已保存配置文件 '{0}' .", cfg.Name));
 
-            if (Program.ActiveConfig.Name == originalName) {
+            if (Program.ActiveConfig.Name == originalName)
+            {
                 Program.ActiveConfig = cfg;
                 Program.ReloadActiveConfig();
             }
-            
+
             // Refresh list
             RefreshConfigList();
         }
 
-        private void settings_ChangePresetName_Click(object sender, EventArgs e) {
+        private void settings_ChangePresetName_Click(object sender, EventArgs e)
+        {
             var name = cfg.Name.Trim();
 
-            if (cfg.Name.Trim() != preset_Name.Text.Trim()) {
+            if (cfg.Name.Trim() != preset_Name.Text.Trim())
+            {
                 cfg.Name = preset_Name.Text.Trim();
                 File.Delete(EditingProfilePath);
             }
@@ -637,7 +688,8 @@ namespace XboxKeyboardMouse.Forms
             Config.Data.Save(cfg.Name + ".ini", cfg);
 
             // Check if cfg is default
-            if (name == "default") {
+            if (name == "default")
+            {
                 // Remake the default ini
                 Config.Data d = new Config.Data();
                 Config.Data.Save("profiles/default.ini", d);
@@ -646,14 +698,15 @@ namespace XboxKeyboardMouse.Forms
             // Refresh listings
             RefreshConfigList();
         }
-        
+
         // -------------
         #endregion
 
         #region Mouse
         // ----------
 
-        private void mouseEngineList_SelectedIndexChanged(object sender, EventArgs e) {
+        private void mouseEngineList_SelectedIndexChanged(object sender, EventArgs e)
+        {
             var index = mouseEngineList.SelectedIndex;
             cfg.Mouse_Eng_Type = (MouseTranslationMode)index;
 
@@ -661,53 +714,60 @@ namespace XboxKeyboardMouse.Forms
             LoadMouseEngineSettings();
         }
 
-        private void mouseInvertAxisX_CheckedChanged(object sender, EventArgs e) {
+        private void mouseInvertAxisX_CheckedChanged(object sender, EventArgs e)
+        {
             cfg.Mouse_Invert_X = mouseInvertAxisX.Checked;
         }
 
-        private void mouseInvertAxisY_CheckedChanged(object sender, EventArgs e) {
+        private void mouseInvertAxisY_CheckedChanged(object sender, EventArgs e)
+        {
             cfg.Mouse_Invert_Y = mouseInvertAxisY.Checked;
         }
 
-        private void mouse_TickRate_TextChanged(object sender, EventArgs e) {
+        private void mouse_TickRate_TextChanged(object sender, EventArgs e)
+        {
             string strTick = mouse_TickRate.Text;
 
             int tickRate = 0;
-            if (! int.TryParse(strTick, out tickRate)) {
+            if (!int.TryParse(strTick, out tickRate))
+            {
                 mouse_TickInvalid.Visible = true;
                 return;
             }
 
             // Min is 1 MS!
-            if (tickRate <= 0) 
+            if (tickRate <= 0)
                 tickRate = 1;
-            
+
 
             mouse_TickInvalid.Visible = false;
             cfg.Mouse_TickRate = tickRate;
         }
 
-        private void mouse_TickRate_Reset_Click(object sender, EventArgs e) {
+        private void mouse_TickRate_Reset_Click(object sender, EventArgs e)
+        {
             cfg.Mouse_TickRate = 16;
             mouse_TickRate.Text = "" + 16;
         }
 
-        private void mouseSelectStick_SelectedIndexChanged(object sender, EventArgs e) {
+        private void mouseSelectStick_SelectedIndexChanged(object sender, EventArgs e)
+        {
             cfg.Mouse_Is_RightStick = comboBox1.SelectedIndex == 1;
         }
 
         MouseSettings.MouseEngineSettings mouseEnginePanel;
-        private void LoadMouseEngineSettings() {
-            if (mouseEnginePanel != null)  
+        private void LoadMouseEngineSettings()
+        {
+            if (mouseEnginePanel != null)
                 if (mouseEngineContainer.Controls.Contains(mouseEnginePanel))
-                    mouseEngineContainer.Controls.Remove  (mouseEnginePanel);
-            
+                    mouseEngineContainer.Controls.Remove(mouseEnginePanel);
+
             // By default we want to set engine as GenericControls
             if (cfg.Mouse_Eng_Type != MouseTranslationMode.NONE && cfg.Mouse_Eng_Type != MouseTranslationMode.INVALID)
                 mouseEnginePanel = new MouseSettings.GenericControls(cfg);
             else
                 mouseEnginePanel = new MouseSettings.NoControls();
-            
+
             mouseEngineContainer.Controls.Add(mouseEnginePanel);
             mouseEnginePanel.Dock = DockStyle.Fill;
         }
@@ -718,11 +778,13 @@ namespace XboxKeyboardMouse.Forms
         #region Keyboard
         // -------------
 
-        private void detachKeyCheckup(bool save = false) {
+        private void detachKeyCheckup(bool save = false)
+        {
             var k1 = (Key)cfg.Controls_KB_Detach_MOD;
             var k2 = (Key)cfg.Controls_KB_Detach_KEY;
 
-            if (k2 == Key.None && k1 != Key.None) {
+            if (k2 == Key.None && k1 != Key.None)
+            {
                 k2 = k1;
                 k1 = Key.None;
             }
@@ -742,8 +804,8 @@ namespace XboxKeyboardMouse.Forms
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(Options));
             StringBuilder fullInfo = new StringBuilder();
 
-            fullInfo.AppendLine("XboxKeyboardMouse");
-            fullInfo.Append("Version: ");
+            fullInfo.AppendLine("XboxKeyboardMouse_cn");
+            fullInfo.Append("版本: ");
             if (ApplicationDeployment.IsNetworkDeployed)
             {
                 fullInfo.Append("ClickOnce-v");
@@ -764,5 +826,40 @@ namespace XboxKeyboardMouse.Forms
 
         // -------------------
         #endregion
+
+        private void materialTabSelector1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void file_Active_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mouse_TickInvalid_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void file_Editing_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mouseEngineContainer_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void infoTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void xbo_k_Back_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

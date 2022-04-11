@@ -1,10 +1,10 @@
-﻿using System;
-
-namespace XboxKeyboardMouse.Libs
+﻿namespace XboxKeyboardMouse.Libs
 {
-    class Logger {
+    class Logger
+    {
 
-        public enum Type {
+        public enum Type
+        {
             Info,
             Debug,
             Error,
@@ -60,8 +60,9 @@ namespace XboxKeyboardMouse.Libs
         /// <param name="txt">The text to write</param>
         /// <param name="appendNewLine">This dictates if a newline will be appended at the end... If using your own set to false.</param>
         /// <param name="log">The type of log category this fits into!</param>
-        public static void appendLog(string tag, string txt, Type log, bool appendNewLine = true) {
-        #if (DEBUG)
+        public static void appendLog(string tag, string txt, Type log, bool appendNewLine = true)
+        {
+#if (DEBUG)
             try {
                 string
                     time = DateTime.Now.ToString("h:mm:sstt"),
@@ -87,7 +88,7 @@ namespace XboxKeyboardMouse.Libs
 
                 System.Diagnostics.Debugger.Log(0, "", finalText + (appendNewLine ? "" : "\n"));
             } catch { }
-        #endif
+#endif
         }
     }
 }

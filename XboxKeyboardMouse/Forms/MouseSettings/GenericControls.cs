@@ -4,16 +4,19 @@ using XboxKeyboardMouse.Config;
 
 namespace XboxKeyboardMouse.Forms.MouseSettings
 {
-    public partial class GenericControls : MouseEngineSettings {
+    public partial class GenericControls : MouseEngineSettings
+    {
         private Data config;
-        
-        public GenericControls (Data config) : base(0, 5) {
+
+        public GenericControls(Data config) : base(0, 5)
+        {
             InitializeComponent();
 
             SetConfig(config);
         }
 
-        public override void SetConfig(Data config) {
+        public override void SetConfig(Data config)
+        {
             this.config = config;
 
             decimal dSensitivityX,
@@ -22,9 +25,10 @@ namespace XboxKeyboardMouse.Forms.MouseSettings
 
             dSensitivityX = (decimal)config.Mouse_Sensitivity_X;
             dSensitivityY = (decimal)config.Mouse_Sensitivity_Y;
-            dFinalMod     = (decimal)config.Mouse_FinalMod;
+            dFinalMod = (decimal)config.Mouse_FinalMod;
 
-            if (dSensitivityX < mouseXSense.Minimum || dSensitivityX > mouseXSense.Maximum) {
+            if (dSensitivityX < mouseXSense.Minimum || dSensitivityX > mouseXSense.Maximum)
+            {
                 var def = mouseXSense.Value;
                 var defS = def.ToString("0.#####");
                 var curS = dSensitivityX.ToString("0.#####");
@@ -34,7 +38,8 @@ namespace XboxKeyboardMouse.Forms.MouseSettings
                 dSensitivityX = def;
             }
 
-            if (dSensitivityY < mouseYSense.Minimum || dSensitivityY > mouseYSense.Maximum) {
+            if (dSensitivityY < mouseYSense.Minimum || dSensitivityY > mouseYSense.Maximum)
+            {
                 var def = mouseYSense.Value;
                 var defS = def.ToString("0.#####");
                 var curS = dSensitivityY.ToString("0.#####");
@@ -44,7 +49,8 @@ namespace XboxKeyboardMouse.Forms.MouseSettings
                 dSensitivityY = def;
             }
 
-            if (dFinalMod < mouseMouseModifier.Minimum || dFinalMod > mouseMouseModifier.Maximum) {
+            if (dFinalMod < mouseMouseModifier.Minimum || dFinalMod > mouseMouseModifier.Maximum)
+            {
                 var def = mouseMouseModifier.Value;
                 var defS = def.ToString("0.#####");
                 var curS = dFinalMod.ToString("0.#####");
@@ -55,20 +61,23 @@ namespace XboxKeyboardMouse.Forms.MouseSettings
             }
 
 
-            mouseXSense.Value          = dSensitivityX;
-            mouseYSense.Value          = dSensitivityY;
-            mouseMouseModifier.Value   = dFinalMod;
+            mouseXSense.Value = dSensitivityX;
+            mouseYSense.Value = dSensitivityY;
+            mouseMouseModifier.Value = dFinalMod;
         }
 
-        private void mouseMouseModifier_ValueChanged(object sender, EventArgs e) {
+        private void mouseMouseModifier_ValueChanged(object sender, EventArgs e)
+        {
             config.Mouse_FinalMod = (double)mouseMouseModifier.Value;
         }
 
-        private void mouseYSense_ValueChanged(object sender, EventArgs e) {
+        private void mouseYSense_ValueChanged(object sender, EventArgs e)
+        {
             config.Mouse_Sensitivity_Y = (double)mouseYSense.Value;
         }
 
-        private void mouseXSense_ValueChanged(object sender, EventArgs e) {
+        private void mouseXSense_ValueChanged(object sender, EventArgs e)
+        {
             config.Mouse_Sensitivity_X = (double)mouseXSense.Value;
         }
     }

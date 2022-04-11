@@ -121,7 +121,7 @@
   <data name="editor_InputKeyboard.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAABkAAAAR+CAYAAACI4/lTAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EwAACxMBAJqcGAAAAAd0SU1FB+ALEhQtDovtY2MAAP+fSURBVHhe7J0F2CVnkbazLLuwOAQNEAhuuz++
+        EAAACxABrSO9dQAAAAd0SU1FB+ALEhQtDovtY2MAAP+fSURBVHhe7J0F2CVnkbazLLuwOAQNEAhuuz++
         aAIkENeJeybuihMgEHd3l4m7u7snk0xs4sQ9mRiE9++7+tzn1NdzvknCLovk7et6rle7T5/uPqer6nmr
         aqq61a1udatb3epWt7rVrW51q1vd6la3utWtbnWrW93qVre61a1udatb3epWt7rVrW51q1vd6la3utWt
         bnWrW93qVre61a1udatb3epWt7rVrW51q1vd6la3utWtbnWrW93qVre61a1udatb3epWt7rVrW51q1vd
@@ -17019,104 +17019,6 @@
         TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0
         TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdM0TdO0LWI7dvx/
         T95QiTdQo3sAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="infoText" xml:space="preserve">
-    <value>###################
-### Stick Settings ###
-###################
-
-When configuring a stick to work on keyboard as well as the mouse, PLEASE NOTE that the joystick will only be reset on each mouse input cycle which is set as the TICK RATE. 
-
-Example: 
-
-	The arrow keys is mapped to the Right stick and the mouse is aswell, you have 
-	the mouse tick rate at 1000 (1 second).
-	
-	When you press one of the arrow keys the stick will be stuck moving until the 
-	mouse is refreshed (aka Every 1 seconds), this can cause your 
-	axis getting "STUCK" or "STICKING".
-
-
-######################
-### Mouse Settings ###
-######################
-Mouse settings are different between each engine, although they can contain the same type of named settings such as Sensitivity etc.
-
-General Questions
-----------
-What does X and Y Mean?
-
-X, this is the X AXIS (Left and Right)
-Y, this is the Y AXIS (Up and Down)
-
-Mouse Sensitivity
-----------
-Each engine will make use of the sensitivity values differently and can cause various effects on each engine, please take this into account when you are setting the sensitivity values. 
-
-The Data Type used to store sensitivity values are in double, meaning that decimal values will work and can be represented as floating point values.
-
-What is a final modifier?
-----------
-A final modifier is a value used in some of the mouse engines as a final multiplier, once the X and Y axis are calculated their values are multiplied by the value used as the "Final Modifier"
-
-
-#####################
-### Mouse Engines ###
-#####################
-A mouse engine is a handler for the mouse, there are serveral build in handlers.
-There are various configurations that can be combined with each engine.
-
-Why are there more than one mouse handler? 
-There are many different games and many of them require different ways of playing them.
-And frankly some of our engines suck so we try to improve or remake them.
-
-The current engines are: 
-Dead-Zoning (default)
-Percentage
-Percentage + Relative
-Raw Input
-Raw Input + Sensitivity
-None
-
-
-Dead-Zoning (default)
----------------------
-This engine has the ability to accommodate for a game's dead zone for effective, accurate mouse control.
-This engine should give you the best results for most scenarios, but must be calibrated to learn the running game's dead zone. This takes a few seconds.
-Once learned, the saved profile will retain the current dead zone size, reducing the need to recalibrate every time, if you frequently return to the same game or games that happen to use very similar dead zones.
-To calibrate, follow these instructions, while running a game:
-* Use keyboard controls for a moment to ensure your XboxKeyboardMouse is active.
-* Press F12 to begin calibration. Wait with your finger over F12 and press it again when your aim starts moving.
-* Press F11 to begin fine-tuning the calibration. Wait with your finger over F11 and press it again when your aim starts moving.
-* (If aim started moving right away for the above step, you can repeat the step to try fine tuning again.)
-At this point, XboxKeyboardMouse has learned the game's dead zone size, and even single-pixel mouse movements should now translate into tiny amounts of aim. If you switch games, or aiming doesn't feel natural yet, you can simply repeat the process to recalibrate.
-
-Percentage
-----------
-This engine works by trying to translate your mouse movement as a percentage and applying that number to the controller's analog location, it seems good on paper but does not perform that very well
-
-Percentage + Relative
-----------
-This move will allow you to move your mouse around and keep it in the current location as before, hence the relative movement. When you move your mouse the sticks location stays the same and is incremented / decremented on each movement. This derives the values from the Percentage engine so it may also appear to be segmented.
-
-Raw Input
-----------
-This will take the changes (in pixels) of your mouse movement from last the capture and just apply it straight onto the joystick, this will change depending on your monitor size, Smaller monitors eg less than 1080p may not have that much of a great effect.
-
-Raw Input + Sensitivity
-----------
-This will take the same as Raw Input but will multiply the pixels by the sensitivity values set in the config.
-
-None
-----------
-Disables the mouse movement
-
-
-##############################
-### Additional Information ###
-##############################
-For additional information, bug reports, and so on: https://github.com/fqlx/XboxKeyboardMouse
 </value>
   </data>
 </root>

@@ -5,8 +5,10 @@ using System.Linq;
 using System.Windows.Input;
 using XboxKeyboardMouse.Libs;
 
-namespace XboxKeyboardMouse {
-    class TranslateKeyboard {
+namespace XboxKeyboardMouse
+{
+    class TranslateKeyboard
+    {
         public static bool TRIGGER_LEFT_PRESSED = false;
         public static bool TRIGGER_RIGHT_PRESSED = false;
 
@@ -32,10 +34,12 @@ namespace XboxKeyboardMouse {
 
         public static Dictionary<RunTimeOptionType, RunTimeOption> mapRunTimeOptions = new Dictionary<RunTimeOptionType, RunTimeOption>();
 
-        private static void KeyInput(SimulatedGamePadState controller) {
+        private static void KeyInput(SimulatedGamePadState controller)
+        {
             List<bool> btnStatus = new List<bool>();
-            
-            try {
+
+            try
+            {
                 btnStatus.Clear();
 
                 bool mouseDisabled = Program.ActiveConfig.Mouse_Eng_Type == MouseTranslationMode.NONE;
@@ -66,21 +70,25 @@ namespace XboxKeyboardMouse {
                     else
                         controller.Buttons &= ~control;
                 }
-                
+
                 // -------------------------------------------------------------------------------
                 //                                TRIGGERS
                 // -------------------------------------------------------------------------------
-                foreach (KeyValuePair<Key, TriggerType> entry in triggers) {
+                foreach (KeyValuePair<Key, TriggerType> entry in triggers)
+                {
                     if (entry.Key == Key.None) continue;
 
                     bool v = Keyboard.IsKeyDown(entry.Key);
                     bool ir = entry.Value == TriggerType.RightTrigger;
 
-                    if (v) {
+                    if (v)
+                    {
                         if (ir)
-                             controller.RightTrigger = 255;
+                            controller.RightTrigger = 255;
                         else controller.LeftTrigger = 255;
-                    } else {
+                    }
+                    else
+                    {
                         if (!TranslateKeyboard.TRIGGER_RIGHT_PRESSED && ir)
                             controller.RightTrigger = 0;
                         else if (!TranslateKeyboard.TRIGGER_LEFT_PRESSED && ir)
@@ -125,7 +133,8 @@ namespace XboxKeyboardMouse {
             return map.Any(entry => entry.Value == control && Keyboard.IsKeyDown(entry.Key));
         }
 
-        private static void Debug_TimeTracer(SimulatedGamePadState Controller) {
+        private static void Debug_TimeTracer(SimulatedGamePadState Controller)
+        {
             // Get the start time
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
@@ -135,21 +144,22 @@ namespace XboxKeyboardMouse {
             // Get the end time
             watch.Stop();
             string time = watch.ElapsedMilliseconds + " MS";
-            
-            if (time != "0 MS") {
+
+            if (time != "0 MS")
+            {
                 // Display the time
                 Logger.appendLogLine("KeyboardInput", $"Timed @ {time}", Logger.Type.Debug);
             }
         }
 
         public static void KeyboardInput(SimulatedGamePadState controller) =>
-            #if (DEBUG)
+#if (DEBUG)
                     // Only enable if you have timing issues AKA Latency on 
                     // the keyboard inputs
                     Debug_TimeTracer(controller);
                     //KeyInput(controller);
-            #else
+#else
                     KeyInput(controller);
-            #endif
+#endif
     }
 }

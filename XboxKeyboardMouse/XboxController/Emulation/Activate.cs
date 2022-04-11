@@ -1,11 +1,11 @@
 ﻿using SimWinInput;
-using System;
 using System.Threading;
 using System.Windows.Forms;
-using XboxKeyboardMouse.Libs;
 
-namespace XboxKeyboardMouse {
-    class Activate {
+namespace XboxKeyboardMouse
+{
+    class Activate
+    {
         public static Thread tXboxStream, tKMInput;
         private static SimGamePad simPad;
         private static SimulatedGamePadState state;
@@ -23,15 +23,17 @@ namespace XboxKeyboardMouse {
             catch
             {
                 ShutDown();
-                MessageBox.Show("Could not initialize SimGamePad / ScpBus. Shutting down.");
+                MessageBox.Show("无法初始化 SimGamePad / ScpBus. 程序关闭.");
                 Application.Exit();
             }
-            
+
             TranslateMouse.InitMouse();
         }
 
-        private static void KeyboardMouseInput() {
-            while (!shuttingDown) {
+        private static void KeyboardMouseInput()
+        {
+            while (!shuttingDown)
+            {
                 TranslateMouse.MouseButtonsInput(state);
                 TranslateKeyboard.KeyboardInput(state);
                 SimGamePad.Instance.Update();
@@ -41,31 +43,34 @@ namespace XboxKeyboardMouse {
             }
         }
 
-        public static void ActivateKeyboardAndMouse(bool ActivateStreamThread = true, bool ActivateInputThread = true) {
+        public static void ActivateKeyboardAndMouse(bool ActivateStreamThread = true, bool ActivateInputThread = true)
+        {
             Init();
 
             // Cursor Toggle thread
-            if (ActivateStreamThread) {
+            if (ActivateStreamThread)
+            {
                 tXboxStream = new Thread(XboxStream.XboxAppDetector);
                 tXboxStream.SetApartmentState(ApartmentState.STA);
                 tXboxStream.IsBackground = true;
                 tXboxStream.Start();
 
-                #if (DEBUG)
+#if (DEBUG)
                     Logger.appendLogLine("Threads", "Starting: tXboxStream thread", Logger.Type.Info);
-                #endif
+#endif
             }
 
             // Keyboard and Mouse input thread
-            if (ActivateInputThread) {
+            if (ActivateInputThread)
+            {
                 tKMInput = new Thread(Activate.KeyboardMouseInput);
                 tKMInput.SetApartmentState(ApartmentState.STA);
                 tKMInput.IsBackground = true;
                 tKMInput.Start();
 
-                #if (DEBUG)
+#if (DEBUG)
                     Logger.appendLogLine("Threads", "Starting: tKMInput thread", Logger.Type.Info);
-                #endif
+#endif
             }
 
             // Set our status to waiting
@@ -77,15 +82,17 @@ namespace XboxKeyboardMouse {
             shuttingDown = true;
             simPad.ShutDown();
         }
-        
-        public static void SendGuide(bool buttonDown) {
+
+        public static void SendGuide(bool buttonDown)
+        {
             if (buttonDown)
-                 state.Buttons |= GamePadControl.Guide;
+                state.Buttons |= GamePadControl.Guide;
             else state.Buttons &= ~GamePadControl.Guide;
             simPad.Update();
         }
-        
-        public static void ResetController() {
+
+        public static void ResetController()
+        {
             state.RightStickX = 0;
             state.RightStickY = 0;
             state.LeftStickX = 0;

@@ -42,7 +42,7 @@
             this.panel1.Controls.Add(this.powerButton);
             this.panel1.Location = new System.Drawing.Point(-1, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(231, 214);
+            this.panel1.Size = new System.Drawing.Size(231, 198);
             this.panel1.TabIndex = 0;
             // 
             // powerButton
@@ -51,7 +51,7 @@
             this.powerButton.Image = global::XboxKeyboardMouse.Properties.Resources.power_big;
             this.powerButton.Location = new System.Drawing.Point(0, 0);
             this.powerButton.Name = "powerButton";
-            this.powerButton.Size = new System.Drawing.Size(231, 214);
+            this.powerButton.Size = new System.Drawing.Size(231, 198);
             this.powerButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.powerButton.TabIndex = 0;
             this.powerButton.TabStop = false;
@@ -61,14 +61,15 @@
             // 
             this.materialLabel1.AutoSize = true;
             this.materialLabel1.Depth = 0;
-            this.materialLabel1.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel1.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Bold);
             this.materialLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel1.Location = new System.Drawing.Point(14, 317);
+            this.materialLabel1.Location = new System.Drawing.Point(61, 293);
             this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel1.Name = "materialLabel1";
-            this.materialLabel1.Size = new System.Drawing.Size(158, 19);
+            this.materialLabel1.Size = new System.Drawing.Size(117, 20);
             this.materialLabel1.TabIndex = 4;
-            this.materialLabel1.Text = "Xbox Keyboard Mouse";
+            this.materialLabel1.Text = "退出XKM_CN";
+            this.materialLabel1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // btnExitApp
             // 
@@ -78,7 +79,7 @@
             this.btnExitApp.FontColor = System.Drawing.Color.Black;
             this.btnExitApp.FontColorDisabled = System.Drawing.Color.Gray;
             this.btnExitApp.Icon = global::XboxKeyboardMouse.Properties.Resources.exit_to_app_black;
-            this.btnExitApp.Location = new System.Drawing.Point(175, 309);
+            this.btnExitApp.Location = new System.Drawing.Point(175, 285);
             this.btnExitApp.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnExitApp.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnExitApp.Name = "btnExitApp";
@@ -86,7 +87,7 @@
             this.btnExitApp.SetBackgroundColor = false;
             this.btnExitApp.SetFontColor = false;
             this.btnExitApp.SetFontDisabledColor = false;
-            this.btnExitApp.Size = new System.Drawing.Size(41, 36);
+            this.btnExitApp.Size = new System.Drawing.Size(41, 33);
             this.btnExitApp.TabIndex = 5;
             this.btnExitApp.Text = "EXIT";
             this.btnExitApp.UseVisualStyleBackColor = true;
@@ -97,10 +98,11 @@
             this.materialFlatButton2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.materialFlatButton2.ControlAutoSize = false;
             this.materialFlatButton2.Depth = 0;
+            this.materialFlatButton2.Font = new System.Drawing.Font("宋体", 9F);
             this.materialFlatButton2.FontColor = System.Drawing.Color.Black;
             this.materialFlatButton2.FontColorDisabled = System.Drawing.Color.Gray;
             this.materialFlatButton2.Icon = global::XboxKeyboardMouse.Properties.Resources.google_controller;
-            this.materialFlatButton2.Location = new System.Drawing.Point(13, 224);
+            this.materialFlatButton2.Location = new System.Drawing.Point(13, 207);
             this.materialFlatButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialFlatButton2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFlatButton2.Name = "materialFlatButton2";
@@ -108,9 +110,9 @@
             this.materialFlatButton2.SetBackgroundColor = false;
             this.materialFlatButton2.SetFontColor = false;
             this.materialFlatButton2.SetFontDisabledColor = false;
-            this.materialFlatButton2.Size = new System.Drawing.Size(203, 36);
+            this.materialFlatButton2.Size = new System.Drawing.Size(203, 33);
             this.materialFlatButton2.TabIndex = 3;
-            this.materialFlatButton2.Text = "Controller";
+            this.materialFlatButton2.Text = "控制器";
             this.materialFlatButton2.UseVisualStyleBackColor = true;
             this.materialFlatButton2.Click += new System.EventHandler(this.materialFlatButton2_Click);
             // 
@@ -119,30 +121,31 @@
             this.materialFlatButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.materialFlatButton1.ControlAutoSize = false;
             this.materialFlatButton1.Depth = 0;
+            this.materialFlatButton1.Font = new System.Drawing.Font("宋体", 9F);
             this.materialFlatButton1.FontColor = System.Drawing.Color.Black;
             this.materialFlatButton1.FontColorDisabled = System.Drawing.Color.Gray;
             this.materialFlatButton1.Icon = global::XboxKeyboardMouse.Properties.Resources.ic_settings_black_24dp_2x;
-            this.materialFlatButton1.Location = new System.Drawing.Point(13, 269);
+            this.materialFlatButton1.Location = new System.Drawing.Point(13, 248);
             this.materialFlatButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialFlatButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFlatButton1.Name = "materialFlatButton1";
             this.materialFlatButton1.Primary = false;
+            this.materialFlatButton1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.materialFlatButton1.SetBackgroundColor = false;
             this.materialFlatButton1.SetFontColor = false;
             this.materialFlatButton1.SetFontDisabledColor = false;
-            this.materialFlatButton1.Size = new System.Drawing.Size(203, 36);
+            this.materialFlatButton1.Size = new System.Drawing.Size(203, 33);
             this.materialFlatButton1.TabIndex = 2;
-            this.materialFlatButton1.Text = "Settings";
-            this.materialFlatButton1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.materialFlatButton1.Text = "设置";
             this.materialFlatButton1.UseVisualStyleBackColor = true;
             this.materialFlatButton1.Click += new System.EventHandler(this.materialFlatButton1_Click);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(230, 357);
+            this.ClientSize = new System.Drawing.Size(230, 330);
             this.Controls.Add(this.btnExitApp);
             this.Controls.Add(this.materialLabel1);
             this.Controls.Add(this.materialFlatButton2);

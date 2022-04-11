@@ -6,7 +6,8 @@ using System.Windows.Input;
 
 namespace XboxKeyboardMouse.Config
 {
-    public class Data {
+    public class Data
+    {
 
         // --> Config Settings
         public string Name = "default";
@@ -16,13 +17,13 @@ namespace XboxKeyboardMouse.Config
         public bool Application_ShowCursor = false;
         public bool Application_LockEscape = true;
         // <-- Application Settings
-        
+
         // --> Mouse
         // --> GENERIC
         public double Mouse_Sensitivity_X = 1000.21299982071f;
         public double Mouse_Sensitivity_Y = 1000.21299982071f;
         public double Mouse_FinalMod = 100;
-            
+
         public bool Mouse_Invert_X = false;
         public bool Mouse_Invert_Y = false;
 
@@ -36,7 +37,7 @@ namespace XboxKeyboardMouse.Config
         public int Controls_Calibrate_DeadZone = (int)Key.F12;
         public int Controls_Calibrate_FineDeadZone = (int)Key.F11;
         public int DeadZoneSize = 0;
-        
+
         // --> Xbox Controls Keyboard
 
         // Main AXBY buttons
@@ -76,12 +77,12 @@ namespace XboxKeyboardMouse.Config
         public int Controls_KB_Sticks_AXIS_L_Down = (int)Key.S;
         public int Controls_KB_Sticks_AXIS_L_Left = (int)Key.A;
         public int Controls_KB_Sticks_AXIS_L_Right = (int)Key.D;
-            
+
         public int Controls_KB_Sticks_AXIS_R_Up = (int)Key.None;
         public int Controls_KB_Sticks_AXIS_R_Down = (int)Key.None;
         public int Controls_KB_Sticks_AXIS_R_Left = (int)Key.None;
         public int Controls_KB_Sticks_AXIS_R_Right = (int)Key.None;
-            
+
         // Mouse Settings
         public int Controls_KB_MReset_MOD = (int)Key.LeftAlt;
         public int Controls_KB_MReset_KEY = (int)Key.P;
@@ -120,14 +121,16 @@ namespace XboxKeyboardMouse.Config
 
         // <-- Xbox Controls Mouse
 
-        public static Data Load(string file) {
+        public static Data Load(string file)
+        {
             Data d = new Data();
 
             if (!Directory.Exists("profiles"))
                 Directory.CreateDirectory("profiles");
 
             var filePath = Path.Combine("profiles", file);
-            if (!File.Exists(filePath)) {
+            if (!File.Exists(filePath))
+            {
                 File.Create(filePath).Close();
 
                 // Save the current config because it has the
@@ -135,12 +138,13 @@ namespace XboxKeyboardMouse.Config
                 Save(file, d);
                 return d;
             }
-            
+
             IniFile f = new IniFile(filePath);
 
             Read(f, "Config", "Name", ref d.Name);
 
-            /* Application Settings */ {
+            /* Application Settings */
+            {
                 Read(f, "Application", "Show_Cursor", ref d.Application_ShowCursor);
                 Read(f, "Application", "Lock_Escape", ref d.Application_LockEscape);
             }
@@ -149,7 +153,8 @@ namespace XboxKeyboardMouse.Config
             Read(f, "Controls_Keyboard", "CalibrateDZ", ref d.Controls_Calibrate_DeadZone);
             Read(f, "Controls_Keyboard", "FineTuneDZ", ref d.Controls_Calibrate_FineDeadZone);
 
-            /* Mouse Settings */ {
+            /* Mouse Settings */
+            {
                 Read(f, "Mouse", "X_Sensitivity", ref d.Mouse_Sensitivity_X);
                 Read(f, "Mouse", "Y_Sensitivity", ref d.Mouse_Sensitivity_Y);
 
@@ -160,12 +165,13 @@ namespace XboxKeyboardMouse.Config
 
                 Read(f, "Mouse", "TickRate", ref d.Mouse_TickRate);
                 Read(f, "Mouse", "Final_Modifier", ref d.Mouse_FinalMod);
-                
+
                 Read(f, "Mouse", "Is_RightStick", ref d.Mouse_Is_RightStick);
                 // Todo: Save Engine Specific Stuff
             }
 
-            /* Controls - Keyboard */ {
+            /* Controls - Keyboard */
+            {
                 Read(f, "Controls_Keyboard", "Button_A", ref d.Controls_KB_Xbox_A);
                 Read(f, "Controls_Keyboard", "Button_B", ref d.Controls_KB_Xbox_B);
                 Read(f, "Controls_Keyboard", "Button_X", ref d.Controls_KB_Xbox_X);
@@ -191,7 +197,7 @@ namespace XboxKeyboardMouse.Config
 
                 Read(f, "Controls_Keyboard", "Sticks_Left", ref d.Controls_KB_Xbox_Sticks_Left);
                 Read(f, "Controls_Keyboard", "Sticks_Right", ref d.Controls_KB_Xbox_Sticks_Right);
-                
+
                 Read(f, "Controls_Keyboard", "Sticks_AXIS_Left_Up", ref d.Controls_KB_Sticks_AXIS_L_Up);
                 Read(f, "Controls_Keyboard", "Sticks_AXIS_Left_Down", ref d.Controls_KB_Sticks_AXIS_L_Down);
                 Read(f, "Controls_Keyboard", "Sticks_AXIS_Left_Left", ref d.Controls_KB_Sticks_AXIS_L_Left);
@@ -206,7 +212,8 @@ namespace XboxKeyboardMouse.Config
                 Read(f, "Controls_Keyboard", "Mouse_Reset_Look_KEY", ref d.Controls_KB_MReset_KEY);
             }
 
-            /* Controls - Mouse */ {
+            /* Controls - Mouse */
+            {
                 Read(f, "Controls_Mouse", "Button_A", ref d.Controls_M_Xbox_A);
                 Read(f, "Controls_Mouse", "Button_B", ref d.Controls_M_Xbox_B);
                 Read(f, "Controls_Mouse", "Button_X", ref d.Controls_M_Xbox_X);
@@ -234,43 +241,49 @@ namespace XboxKeyboardMouse.Config
             return d;
         }
 
-        public static void Save(string file, Data d) {
-            if (!Directory.Exists("profiles")) {
+        public static void Save(string file, Data d)
+        {
+            if (!Directory.Exists("profiles"))
+            {
                 Directory.CreateDirectory("profiles");
             }
 
             var filePath = Path.Combine("profiles", file);
-            if (!File.Exists(filePath)) {
+            if (!File.Exists(filePath))
+            {
                 File.Create(filePath).Close();
             }
-            
+
             IniFile f = new IniFile(filePath);
             Write(f, "Config", "Name", d.Name);
 
-            /* Application Settings */ {
+            /* Application Settings */
+            {
                 Write(f, "Application", "Show_Cursor", d.Application_ShowCursor);
                 Write(f, "Application", "Lock_Escape", d.Application_LockEscape);
             }
 
-            Write(f, "Mouse",             "DeadZone",    d.DeadZoneSize);
+            Write(f, "Mouse", "DeadZone", d.DeadZoneSize);
             Write(f, "Controls_Keyboard", "CalibrateDZ", d.Controls_Calibrate_DeadZone);
-            Write(f, "Controls_Keyboard", "FineTuneDZ",  d.Controls_Calibrate_FineDeadZone);
-            
-            /* Mouse Settings */ { 
-                Write(f, "Mouse", "X_Sensitivity",  d.Mouse_Sensitivity_X);
-                Write(f, "Mouse", "Y_Sensitivity",  d.Mouse_Sensitivity_Y);
+            Write(f, "Controls_Keyboard", "FineTuneDZ", d.Controls_Calibrate_FineDeadZone);
 
-                Write(f, "Mouse", "X_Inverted",     d.Mouse_Invert_X);
-                Write(f, "Mouse", "Y_Inverted",     d.Mouse_Invert_Y);
-                Write(f, "Mouse", "Type",           d.Mouse_Eng_Type);
+            /* Mouse Settings */
+            {
+                Write(f, "Mouse", "X_Sensitivity", d.Mouse_Sensitivity_X);
+                Write(f, "Mouse", "Y_Sensitivity", d.Mouse_Sensitivity_Y);
 
-                Write(f, "Mouse", "TickRate",       d.Mouse_TickRate);
+                Write(f, "Mouse", "X_Inverted", d.Mouse_Invert_X);
+                Write(f, "Mouse", "Y_Inverted", d.Mouse_Invert_Y);
+                Write(f, "Mouse", "Type", d.Mouse_Eng_Type);
+
+                Write(f, "Mouse", "TickRate", d.Mouse_TickRate);
                 Write(f, "Mouse", "Final_Modifier", d.Mouse_FinalMod);
 
-                Write(f, "Mouse", "Is_RightStick",  d.Mouse_Is_RightStick);
+                Write(f, "Mouse", "Is_RightStick", d.Mouse_Is_RightStick);
             }
 
-            /* Controls - Keyboard */ {
+            /* Controls - Keyboard */
+            {
                 Write(f, "Controls_Keyboard", "Button_A", d.Controls_KB_Xbox_A);
                 Write(f, "Controls_Keyboard", "Button_B", d.Controls_KB_Xbox_B);
                 Write(f, "Controls_Keyboard", "Button_X", d.Controls_KB_Xbox_X);
@@ -311,7 +324,8 @@ namespace XboxKeyboardMouse.Config
                 Write(f, "Controls_Keyboard", "Mouse_Reset_Look_KEY", d.Controls_KB_MReset_KEY);
             }
 
-            /* Controls - Mouse */ {
+            /* Controls - Mouse */
+            {
                 Write(f, "Controls_Mouse", "Button_A", d.Controls_M_Xbox_A);
                 Write(f, "Controls_Mouse", "Button_B", d.Controls_M_Xbox_B);
                 Write(f, "Controls_Mouse", "Button_X", d.Controls_M_Xbox_X);
@@ -339,41 +353,54 @@ namespace XboxKeyboardMouse.Config
             f.SaveSettings();
             return;
         }
-        
-        private static void Read(IniFile ini, string Section, string Name, ref double @out) {
+
+        private static void Read(IniFile ini, string Section, string Name, ref double @out)
+        {
             string sTmp; double dTmp = 0;
 
-            try {
+            try
+            {
                 sTmp = ini.GetSetting(Section, Name);
                 double.TryParse(sTmp, out dTmp);
                 @out = dTmp;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show($"Failed to read value [{Section}]{Name}, using default value...\n\nError: " + ex.Message);
             }
         }
 
-        private static void Read(IniFile ini, string Section, string Name, ref string @out) {
+        private static void Read(IniFile ini, string Section, string Name, ref string @out)
+        {
             @out = ini.GetSetting(Section, Name);
         }
 
-        private static void Read(IniFile ini, string Section, string Name, ref int @out) {
+        private static void Read(IniFile ini, string Section, string Name, ref int @out)
+        {
             string sTmp; int dTmp = 0;
 
-            try {
+            try
+            {
                 sTmp = ini.GetSetting(Section, Name);
                 int.TryParse(sTmp, out dTmp);
                 @out = dTmp;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show($"Failed to read value [{Section}]{Name}, using default value...\n\nError: " + ex.Message);
             }
         }
 
-        private static void Read(IniFile ini, string Section, string Name, ref bool @out, bool @default = false) {
+        private static void Read(IniFile ini, string Section, string Name, ref bool @out, bool @default = false)
+        {
             string tmp = ini.GetSetting(Section, Name);
 
-            if (tmp == null) {
+            if (tmp == null)
+            {
                 Write(ini, Section, Name, @default);
-            } else {
+            }
+            else
+            {
                 string tf = tmp.ToLower();
 
                 string[] chks = { "1", "y", "t", "true" };
@@ -381,29 +408,37 @@ namespace XboxKeyboardMouse.Config
             }
         }
 
-        private static void Read(IniFile ini, string Section, string Name, ref MouseTranslationMode @out) {
+        private static void Read(IniFile ini, string Section, string Name, ref MouseTranslationMode @out)
+        {
             string tmp = ini.GetSetting(Section, Name);
 
-            if (tmp == null) {
+            if (tmp == null)
+            {
                 Write(ini, Section, Name, MouseTranslationMode.INVALID);
-            } else {
+            }
+            else
+            {
                 @out = (MouseTranslationMode)Enum.Parse(typeof(MouseTranslationMode), tmp);
             }
         }
 
-        private static void Write(IniFile ini, string Section, string Name, double val) {
+        private static void Write(IniFile ini, string Section, string Name, double val)
+        {
             ini.AddSetting(Section, Name, val + "");
         }
 
-        private static void Write(IniFile ini, string Section, string Name, int val) {
+        private static void Write(IniFile ini, string Section, string Name, int val)
+        {
             ini.AddSetting(Section, Name, val + "");
         }
 
-        private static void Write(IniFile ini, string Section, string Name, bool val) {
+        private static void Write(IniFile ini, string Section, string Name, bool val)
+        {
             ini.AddSetting(Section, Name, val ? "true" : "false");
         }
 
-        private static void Write(IniFile ini, string Section, string Name, string val) {
+        private static void Write(IniFile ini, string Section, string Name, string val)
+        {
             ini.AddSetting(Section, Name, val);
         }
 

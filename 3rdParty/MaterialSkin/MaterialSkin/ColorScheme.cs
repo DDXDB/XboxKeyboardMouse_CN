@@ -16,7 +16,8 @@ namespace MaterialSkin
         /// <param name="lightPrimary">A lighter version of the primary color, a -100 color is suggested here.</param>
         /// <param name="accent">The accent color, a -200 color is suggested here.</param>
         /// <param name="textShade">The text color, the one with the highest contrast is suggested.</param>
-        public ColorScheme(Primary primary, Primary darkPrimary, Primary lightPrimary, Accent accent, TextShade textShade) {
+        public ColorScheme(Primary primary, Primary darkPrimary, Primary lightPrimary, Accent accent, TextShade textShade)
+        {
             //Color
             PrimaryColor = ((int)primary).ToColor();
             DarkPrimaryColor = ((int)darkPrimary).ToColor();
@@ -39,7 +40,8 @@ namespace MaterialSkin
             TextBrush = new SolidBrush(TextColor);
         }
 
-        public ColorScheme(Color primary, Color darkPrimary, Color lightPrimary, Color accent, TextShade textShade) {
+        public ColorScheme(Color primary, Color darkPrimary, Color lightPrimary, Color accent, TextShade textShade)
+        {
             //Color
             PrimaryColor = primary;
             DarkPrimaryColor = darkPrimary;

@@ -8,7 +8,8 @@ using System.Windows.Forms;
 
 namespace XboxKeyboardMouse
 {
-    class XboxStream {
+    class XboxStream
+    {
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
 
@@ -19,7 +20,8 @@ namespace XboxKeyboardMouse
         private static extern bool GetWindowRect(IntPtr hWnd, out RECT Rect);
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct RECT {
+        public struct RECT
+        {
             public int X;  //left
             public int Y;  //top
             public int Width;  //right
@@ -40,6 +42,8 @@ namespace XboxKeyboardMouse
             "Xbox konsoles palīgs",
             "Xbox Konsolu Yardımcısı",
             "Xbox Konsolu Yardımcısı - Beta",
+            "Xbox 主机小帮手",
+            "Xbox 控制台小帮手 - Beta",
             "Xbox 主機小幫手",
             "Xbox 主機小幫手 - beta 搶鮮版",
             "Xbox 本体コンパニオン",
@@ -76,7 +80,8 @@ namespace XboxKeyboardMouse
             "מסייע קונסולת Xbox - בתא",
         };
 
-        public static void XboxAppDetector() {
+        public static void XboxAppDetector()
+        {
             bool started = false;
 
             const int count = 512;
@@ -111,7 +116,8 @@ namespace XboxKeyboardMouse
             }
         }
 
-        private static void LockAndHideCursor() {
+        private static void LockAndHideCursor()
+        {
             if (Program.HideCursor)
                 CursorView.CursorHide();
 
@@ -121,14 +127,16 @@ namespace XboxKeyboardMouse
             tMouseMovement.Start();
         }
 
-        private static void ShowAndFreeCursor() {
+        private static void ShowAndFreeCursor()
+        {
             CursorView.CursorShow();
 
             if (tMouseMovement != null)
                 tMouseMovement.Abort();
         }
 
-        private static bool IsFullscreen(IntPtr handle) {
+        private static bool IsFullscreen(IntPtr handle)
+        {
             bool runningFullScreen = false;
             RECT appBounds;
             Rectangle screenBounds;
@@ -136,7 +144,8 @@ namespace XboxKeyboardMouse
             GetWindowRect(handle, out appBounds);
 
             screenBounds = Screen.FromHandle(handle).Bounds;
-            if ((appBounds.Height - appBounds.Y) == screenBounds.Height && (appBounds.Width - appBounds.X) == screenBounds.Width) {
+            if ((appBounds.Height - appBounds.Y) == screenBounds.Height && (appBounds.Width - appBounds.X) == screenBounds.Width)
+            {
                 runningFullScreen = true;
             }
 

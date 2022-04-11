@@ -8,7 +8,8 @@ using System.Windows.Forms;
 
 namespace XboxKeyboardMouse
 {
-    class TranslateMouse {
+    class TranslateMouse
+    {
         /// <summary>The magnitude of dead zone size increases, each mouse polling, when running at regular calibration speed.</summary>
         /// <remarks>Hand-tested value for balancing calibration speed versus accuracy, with a fine-tune calibration option in mind.</remarks>
         private static short RegularCalibrationSpeedAdvancementPerPoll = 50;
@@ -17,13 +18,14 @@ namespace XboxKeyboardMouse
         /// <remarks>Hand-tested value for balancing accuracy over speed, knowing our starting value should already be "close" to our target.option in mind.</remarks>
         private static short FineTuneCalibrationSpeedAdvancementPerPoll = 10;
 
-        public static bool TRIGGER_LEFT_PRESSED  = false;
+        public static bool TRIGGER_LEFT_PRESSED = false;
         public static bool TRIGGER_RIGHT_PRESSED = false;
 
         static private DirectInput device;
         static private Mouse mouse;
 
-        public static void InitMouse() {
+        public static void InitMouse()
+        {
             device = new DirectInput();
             mouse = new Mouse(device);
             mouse.Acquire();
@@ -33,16 +35,19 @@ namespace XboxKeyboardMouse
         static Point centered = new Point(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 2);
         static short iMax = short.MaxValue;
         static short iMin = short.MinValue;
-        
-        public static void MouseMovementInput() {
+
+        public static void MouseMovementInput()
+        {
             centered = new Point(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 2);
-            
-            while (true) {
-                switch (Program.ActiveConfig.Mouse_Eng_Type) {
+
+            while (true)
+            {
+                switch (Program.ActiveConfig.Mouse_Eng_Type)
+                {
                     case MouseTranslationMode.Percentage: MouseMovement_Percentage(); break;
-                    case MouseTranslationMode.Relative:   MouseMovement_Relative();   break;
-                    case MouseTranslationMode.Raw:        MouseMovement_Raw();        break;
-                    case MouseTranslationMode.RawSens:    MouseMovement_Raw_S();      break;
+                    case MouseTranslationMode.Relative: MouseMovement_Relative(); break;
+                    case MouseTranslationMode.Raw: MouseMovement_Raw(); break;
+                    case MouseTranslationMode.RawSens: MouseMovement_Raw_S(); break;
                     case MouseTranslationMode.DeadZoning: MouseMovement_DeadZoning(); break;
                     default: break;
                 }
@@ -59,7 +64,7 @@ namespace XboxKeyboardMouse
         {
             return value.CompareTo(min) < 0 ? min : value.CompareTo(max) > 0 ? max : value;
         }
-        
+
         public static void RunCalibrateDeadZone()
         {
             HandleCalibrator(0, RegularCalibrationSpeedAdvancementPerPoll);
@@ -167,7 +172,8 @@ namespace XboxKeyboardMouse
             SetAxis(joyX, joyY);
         }
 
-        private static void MouseMovement_Percentage() {
+        private static void MouseMovement_Percentage()
+        {
             Point mouse = Control.MousePosition;
 
             short joyX;
@@ -198,10 +204,11 @@ namespace XboxKeyboardMouse
             // How it works past that, not even i know.
             // How well it works? Try it for your self its not perfect but it'll do.
 
-            /* Calculate Joystick X */ {
+            /* Calculate Joystick X */
+            {
                 double x;
                 if (Program.ActiveConfig.Mouse_Invert_X)
-                     x = centered.X - mouse.X;
+                    x = centered.X - mouse.X;
                 else x = mouse.X - centered.X;
 
                 double max = (Screen.PrimaryScreen.Bounds.Width / 4) * 1.5;
@@ -210,16 +217,17 @@ namespace XboxKeyboardMouse
                 double number = iMax;
                 double final = number * percentage / 100;
 
-                if      (final >= iMax && final > 0) final = iMax;
+                if (final >= iMax && final > 0) final = iMax;
                 else if (final <= iMin && final < 0) final = iMin;
 
                 joyX = Convert.ToInt16(final);
             }
 
-            /* Calculate Joystick Y */ {
+            /* Calculate Joystick Y */
+            {
                 double y;
                 if (Program.ActiveConfig.Mouse_Invert_Y)
-                     y = mouse.Y - centered.Y;
+                    y = mouse.Y - centered.Y;
                 else y = centered.Y - mouse.Y;
 
                 double max = Screen.PrimaryScreen.Bounds.Height / 2;
@@ -239,7 +247,8 @@ namespace XboxKeyboardMouse
             Cursor.Position = centered;
         }
 
-        private static void MouseMovement_Relative() {
+        private static void MouseMovement_Relative()
+        {
 
             Point mouse = Control.MousePosition;
             short joyX = SimGamePad.Instance.State[0].RightStickX;
@@ -253,11 +262,12 @@ namespace XboxKeyboardMouse
              * and decrementing rather than just setting
              */
 
-            /* Calculate Joystick X */ {
+            /* Calculate Joystick X */
+            {
                 double x;
 
                 if (Program.ActiveConfig.Mouse_Invert_X)
-                     x = centered.X - mouse.X;
+                    x = centered.X - mouse.X;
                 else x = mouse.X - centered.X;
 
                 double max = (Screen.PrimaryScreen.Bounds.Width / 4) * 1.5;
@@ -273,7 +283,8 @@ namespace XboxKeyboardMouse
                 joyX += tJoyX;
             }
 
-            /* Calculate Joystick Y */ {
+            /* Calculate Joystick Y */
+            {
                 double y;
                 if (Program.ActiveConfig.Mouse_Invert_Y)
                     y = mouse.Y - centered.Y;
@@ -292,14 +303,15 @@ namespace XboxKeyboardMouse
 
                 joyY += TJoyY;
             }
-            
+
             // Send Axis
             SetAxis(joyX, joyY);
 
             Cursor.Position = centered;
         }
 
-        private static void MouseMovement_Raw() {
+        private static void MouseMovement_Raw()
+        {
             Point mouse = Control.MousePosition;
 
             short joyX = 0;
@@ -330,14 +342,15 @@ namespace XboxKeyboardMouse
 
             Cursor.Position = centered;
         }
-        
-        private static void MouseMovement_Raw_S() {
+
+        private static void MouseMovement_Raw_S()
+        {
             Point mouse = Control.MousePosition;
 
             short joyX = 0;
             short joyY = 0;
 
-            double x = Program.ActiveConfig.Mouse_Invert_X ? 
+            double x = Program.ActiveConfig.Mouse_Invert_X ?
                        centered.X - mouse.X : mouse.X - centered.X;
             double y = Program.ActiveConfig.Mouse_Invert_Y ?
                        mouse.Y - centered.Y : centered.Y - mouse.Y;
@@ -366,36 +379,47 @@ namespace XboxKeyboardMouse
             Cursor.Position = centered;
         }
 
-        public static void MouseButtonsInput(SimulatedGamePadState controller) {
+        public static void MouseButtonsInput(SimulatedGamePadState controller)
+        {
             MouseState state = mouse.GetCurrentState();
 
-            TRIGGER_LEFT_PRESSED  = state.IsPressed(0);
+            TRIGGER_LEFT_PRESSED = state.IsPressed(0);
             TRIGGER_RIGHT_PRESSED = state.IsPressed(1);
 
-            if (state.IsPressed(0)) {
+            if (state.IsPressed(0))
+            {
                 controller.RightTrigger = 255;
-            } else {
+            }
+            else
+            {
                 if (!TranslateKeyboard.TRIGGER_RIGHT_PRESSED)
                     controller.RightTrigger = 0;
             }
 
-            if (state.IsPressed(1)) {
+            if (state.IsPressed(1))
+            {
                 controller.LeftTrigger = 255;
-            } else {
+            }
+            else
+            {
                 if (!TranslateKeyboard.TRIGGER_LEFT_PRESSED)
                     controller.LeftTrigger = 0;
             }
         }
-        
-        private static void SetAxis(short x, short y) {
-        #if (DEBUG)
-            //Logger.appendLogLine("Mouse", $"Mouse (X, Y) = ({x.ToString().PadRight(6, ' ')}, {y.ToString().PadRight(6, ' ')})", Logger.Type.Controller);
-        #endif
 
-            if (Program.ActiveConfig.Mouse_Is_RightStick) {
+        private static void SetAxis(short x, short y)
+        {
+#if (DEBUG)
+            //Logger.appendLogLine("Mouse", $"Mouse (X, Y) = ({x.ToString().PadRight(6, ' ')}, {y.ToString().PadRight(6, ' ')})", Logger.Type.Controller);
+#endif
+
+            if (Program.ActiveConfig.Mouse_Is_RightStick)
+            {
                 SimGamePad.Instance.State[0].RightStickX = x;
                 SimGamePad.Instance.State[0].RightStickY = y;
-            } else {
+            }
+            else
+            {
                 SimGamePad.Instance.State[0].LeftStickX = x;
                 SimGamePad.Instance.State[0].LeftStickY = y;
             }

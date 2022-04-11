@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace XboxKeyboardMouse.Config {
-    public class IniFile {
+namespace XboxKeyboardMouse.Config
+{
+    public class IniFile
+    {
         private Hashtable keyPairs = new Hashtable();
         private String iniFilePath;
 
-        private struct SectionPair {
+        private struct SectionPair
+        {
             public String Section;
             public String Key;
         }
@@ -22,7 +19,8 @@ namespace XboxKeyboardMouse.Config {
         /// Opens the INI file at the given path and enumerates the values in the IniParser.
         /// </summary>
         /// <param name="iniPath">Full path to INI file.</param>
-        public IniFile(String iniPath) {
+        public IniFile(String iniPath)
+        {
             TextReader iniFile = null;
             String strLine = null;
             String currentRoot = null;
@@ -30,19 +28,26 @@ namespace XboxKeyboardMouse.Config {
 
             iniFilePath = iniPath;
 
-            if (File.Exists(iniPath)) {
-                try {
+            if (File.Exists(iniPath))
+            {
+                try
+                {
                     iniFile = new StreamReader(iniPath);
 
                     strLine = iniFile.ReadLine();
 
-                    while (strLine != null) {
+                    while (strLine != null)
+                    {
                         strLine = strLine.Trim();
 
-                        if (strLine != "") {
-                            if (strLine.StartsWith("[") && strLine.EndsWith("]")) {
+                        if (strLine != "")
+                        {
+                            if (strLine.StartsWith("[") && strLine.EndsWith("]"))
+                            {
                                 currentRoot = strLine.Substring(1, strLine.Length - 2);
-                            } else {
+                            }
+                            else
+                            {
                                 keyPair = strLine.Split(new char[] { '=' }, 2);
 
                                 SectionPair sectionPair;
@@ -64,13 +69,18 @@ namespace XboxKeyboardMouse.Config {
                         strLine = iniFile.ReadLine();
                     }
 
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     throw ex;
-                } finally {
+                }
+                finally
+                {
                     if (iniFile != null)
                         iniFile.Close();
                 }
-            } else throw new FileNotFoundException("Unable to locate " + iniPath);
+            }
+            else throw new FileNotFoundException("Unable to locate " + iniPath);
         }
 
         /// <summary>
@@ -78,7 +88,8 @@ namespace XboxKeyboardMouse.Config {
         /// </summary>
         /// <param name="sectionName">Section name.</param>
         /// <param name="settingName">Key name.</param>
-        public String GetSetting(String sectionName, String settingName) {
+        public String GetSetting(String sectionName, String settingName)
+        {
             SectionPair sectionPair;
             sectionPair.Section = sectionName;
             sectionPair.Key = settingName;
@@ -90,10 +101,12 @@ namespace XboxKeyboardMouse.Config {
         /// Enumerates all lines for given section.
         /// </summary>
         /// <param name="sectionName">Section to enum.</param>
-        public String[] EnumSection(String sectionName) {
+        public String[] EnumSection(String sectionName)
+        {
             ArrayList tmpArray = new ArrayList();
 
-            foreach (SectionPair pair in keyPairs.Keys) {
+            foreach (SectionPair pair in keyPairs.Keys)
+            {
                 if (pair.Section == sectionName)
                     tmpArray.Add(pair.Key);
             }
@@ -107,7 +120,8 @@ namespace XboxKeyboardMouse.Config {
         /// <param name="sectionName">Section to add under.</param>
         /// <param name="settingName">Key name to add.</param>
         /// <param name="settingValue">Value of key.</param>
-        public void AddSetting(String sectionName, String settingName, String settingValue) {
+        public void AddSetting(String sectionName, String settingName, String settingValue)
+        {
             SectionPair sectionPair;
             sectionPair.Section = sectionName;
             sectionPair.Key = settingName;
@@ -123,7 +137,8 @@ namespace XboxKeyboardMouse.Config {
         /// </summary>
         /// <param name="sectionName">Section to add under.</param>
         /// <param name="settingName">Key name to add.</param>
-        public void AddSetting(String sectionName, String settingName) {
+        public void AddSetting(String sectionName, String settingName)
+        {
             AddSetting(sectionName, settingName, null);
         }
 
@@ -132,7 +147,8 @@ namespace XboxKeyboardMouse.Config {
         /// </summary>
         /// <param name="sectionName">Section to add under.</param>
         /// <param name="settingName">Key name to add.</param>
-        public void DeleteSetting(String sectionName, String settingName) {
+        public void DeleteSetting(String sectionName, String settingName)
+        {
             SectionPair sectionPair;
             sectionPair.Section = sectionName;
             sectionPair.Key = settingName;
@@ -145,21 +161,26 @@ namespace XboxKeyboardMouse.Config {
         /// Save settings to new file.
         /// </summary>
         /// <param name="newFilePath">New file path.</param>
-        public void SaveSettings(String newFilePath) {
+        public void SaveSettings(String newFilePath)
+        {
             ArrayList sections = new ArrayList();
             String tmpValue = "";
             String strToSave = "";
 
-            foreach (SectionPair sectionPair in keyPairs.Keys) {
+            foreach (SectionPair sectionPair in keyPairs.Keys)
+            {
                 if (!sections.Contains(sectionPair.Section))
                     sections.Add(sectionPair.Section);
             }
 
-            foreach (String section in sections) {
+            foreach (String section in sections)
+            {
                 strToSave += ("[" + section + "]\r\n");
 
-                foreach (SectionPair sectionPair in keyPairs.Keys) {
-                    if (sectionPair.Section == section) {
+                foreach (SectionPair sectionPair in keyPairs.Keys)
+                {
+                    if (sectionPair.Section == section)
+                    {
                         tmpValue = (String)keyPairs[sectionPair];
 
                         if (tmpValue != null)
@@ -172,11 +193,14 @@ namespace XboxKeyboardMouse.Config {
                 strToSave += "\r\n";
             }
 
-            try {
+            try
+            {
                 TextWriter tw = new StreamWriter(newFilePath);
                 tw.Write(strToSave);
                 tw.Close();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }
@@ -184,7 +208,8 @@ namespace XboxKeyboardMouse.Config {
         /// <summary>
         /// Save settings back to ini file.
         /// </summary>
-        public void SaveSettings() {
+        public void SaveSettings()
+        {
             SaveSettings(iniFilePath);
         }
     }

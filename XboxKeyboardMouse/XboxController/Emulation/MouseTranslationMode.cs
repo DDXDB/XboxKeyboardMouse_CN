@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace XboxKeyboardMouse
+﻿namespace XboxKeyboardMouse
 {
     public enum MouseTranslationMode : int
     {

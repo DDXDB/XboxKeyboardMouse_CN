@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace XboxKeyboardMouse
+﻿namespace XboxKeyboardMouse
 {
     /// <summary>Calibrator for Dead Zone settings.</summary>
     public class DeadZoneCalibrator
@@ -30,7 +28,7 @@ namespace XboxKeyboardMouse
         public int AdvanceDeadZoneSize()
         {
             this.CurrentDeadZone += this.CalibrationIncrement;
-            
+
             // Cap to avoid short conversion issues when user leaves calibrator running too long.
             if (this.CurrentDeadZone > MaxRespectedDeadZoneSize)
                 this.CurrentDeadZone = MaxRespectedDeadZoneSize;
